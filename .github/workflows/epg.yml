@@ -27,3 +27,6 @@ jobs:
           fi
       - name: Push changes
         run: git push origin main
+      - name: Purge jsDelivr cache
+        run: |
+          curl -sS "https://purge.jsdelivr.net/gh/zcyxa/tvlogo@main/e.xml" || true
