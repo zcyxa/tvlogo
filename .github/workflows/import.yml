@@ -1,0 +1,25 @@
+name: Import from old repo
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy files from zcyxa/logo
+        run: |
+          set -euo pipefail
+          git config user.name "zcyxa"
+          git config user.email "zcyxa@users.noreply.github.com"
+          git clone --depth 1 https://github.com/zcyxa/logo.git /tmp/src
+          rm -rf /tmp/src/.git /tmp/src/.github /tmp/src/CNAME
+          cp -a /tmp/src/. .
+          sed -i "s#repository: '[^']*'#repository: 'zcyxa.github.io/tvlogo'#" worker/epg.js
+          grep -n "repository:" worker/epg.js || true
+          git add -A
+          git commit -m "台标与 EPG（从 zcyxa/logo 搬移）"
+          git push origin HEAD:main
