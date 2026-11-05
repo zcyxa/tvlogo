@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>电视直播台标 &amp; EPG</title>
+<meta name="description" content="纯静态的电视频道台标库与 EPG 节目单，可直接用于 IPTV / DIYP 客户端。">
+<style>
+  :root{
+    --bg:#f5f7fb; --card:#fff; --text:#1b2230; --muted:#6b7488;
+    --line:#e4e9f2; --brand:#2563eb; --brand-soft:#eaf1ff; --code:#f2f5fa;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0f1218; --card:#171b23; --text:#e7ebf3; --muted:#9aa3b5;
+      --line:#262c38; --brand:#5b8cff; --brand-soft:#1b2436; --code:#11151c;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font:15px/1.7 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+  header{padding:64px 0 8px;text-align:center}
+  header h1{margin:0 0 10px;font-size:32px;letter-spacing:.5px}
+  header p{margin:0;color:var(--muted);font-size:15px}
+  .tags{margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .tag{font-size:12.5px;color:var(--brand);background:var(--brand-soft);border-radius:999px;padding:4px 12px}
+  section{margin:38px 0}
+  h2{font-size:17px;margin:0 0 16px;display:flex;align-items:center;gap:9px}
+  h2::before{content:"";width:4px;height:16px;border-radius:2px;background:var(--brand)}
+  h2 span{font-size:12.5px;color:var(--muted);font-weight:400}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .card h3{margin:0;font-size:14px;font-weight:600}
+  .card .hint{margin:2px 0 10px;font-size:12.5px;color:var(--muted)}
+  .addr{display:flex;gap:8px;align-items:center}
+  code{
+    flex:1;min-width:0;font:12.5px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;
+    background:var(--code);border-radius:8px;padding:8px 10px;
+    overflow:auto;white-space:nowrap;
+  }
+  button{
+    flex:none;border:1px solid var(--line);background:var(--card);color:var(--text);
+    border-radius:8px;padding:7px 11px;font-size:12.5px;cursor:pointer;
+    transition:.15s;white-space:nowrap;
+  }
+  button:hover{border-color:var(--brand);color:var(--brand)}
+  button.done{border-color:#16a34a;color:#16a34a}
+  .search{margin-bottom:14px}
+  input[type=search]{
+    width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--line);
+    background:var(--card);color:var(--text);font-size:14px;outline:none;transition:.15s;
+  }
+  input[type=search]:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+  .logos{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:12px}
+  .logo{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:12px 8px 9px;text-align:center;transition:.15s;
+  }
+  .logo:hover{transform:translateY(-2px);box-shadow:0 10px 20px -12px rgba(16,24,40,.45)}
+  .logo img{width:62px;height:62px;object-fit:contain;display:block;margin:0 auto 7px}
+  .logo span{font-size:11.5px;color:var(--muted);word-break:break-all;line-height:1.4}
+  .empty{color:var(--muted);font-size:13px;padding:16px 0}
+  .notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+  .notes ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:13.5px}
+  .notes li{margin:4px 0}
+  footer{color:var(--muted);font-size:12.5px;text-align:center;padding:44px 0 56px;line-height:1.9}
+  footer a{color:var(--brand);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>电视直播台标 &amp; EPG</h1>
+    <p>纯静态 · 免服务器 · 直接给 IPTV / DIYP 客户端调用</p>
+    <div class="tags">
+      <span class="tag">942 个电视频道台标</span>
+      <span class="tag">468 个电台图标</span>
+      <span class="tag">XMLTV 节目单</span>
+      <span class="tag">每 2 小时自动更新</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>接口地址 <span>把 {name} 换成频道名即可</span></h2>
+    <div class="cards">
+      <div class="card">
+        <h3>台标</h3>
+        <div class="hint">jsDelivr CDN，缓存后约 200 ms</div>
+        <div class="addr">
+          <code id="u1">https://gcore.jsdelivr.net/gh/zcyxa/tvlogo@main/tv/{name|uppercase}.png</code>
+          <button data-copy="u1">复制</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>节目单（压缩版 825 KB）</h3>
+        <div class="hint">客户端需支持 .gz，URL 必须以 .gz 结尾</div>
+        <div class="addr">
+          <code id="u2">https://gcore.jsdelivr.net/gh/zcyxa/tvlogo@data/e.xml.gz</code>
+          <button data-copy="u2">复制</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>节目单（原始 XMLTV 9.4 MB）</h3>
+        <div class="hint">不支持压缩的播放器用这个</div>
+        <div class="addr">
+          <code id="u3">https://gcore.jsdelivr.net/gh/zcyxa/tvlogo@data/e.xml</code>
+          <button data-copy="u3">复制</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>国内中转（gh-proxy）</h3>
+        <div class="hint">jsDelivr 打不开时用这组</div>
+        <div class="addr">
+          <code id="u4">https://gh-proxy.com/https://raw.githubusercontent.com/zcyxa/tvlogo/main/tv/{name|uppercase}.png</code>
+          <button data-copy="u4">复制</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>台标预览 <span>输入频道名可过滤，如“卫视”“CCTV”</span></h2>
+    <div class="search">
+      <input id="q" type="search" placeholder="搜索台标，例如 湖南、CCTV、凤凰…" autocomplete="off">
+    </div>
+    <div class="logos" id="logos"></div>
+    <div class="empty" id="empty" hidden>没有匹配的台标，试试别的关键词。</div>
+  </section>
+
+  <section>
+    <h2>使用说明</h2>
+    <div class="notes">
+      <div class="card">
+        <h3>台标</h3>
+        <ul>
+          <li>文件名即频道名，如 <code>tv/CCTV1.png</code>、<code>tv/湖南卫视.png</code></li>
+          <li>支持中文名与大写名（{name|uppercase}）</li>
+          <li>建议 512×512 以内、单张 100 KB 以下</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>节目单</h3>
+        <ul>
+          <li>数据在 <code>data</code> 分支，每 2 小时强制覆盖一次</li>
+          <li>同时提供 <code>e.xml</code> 与 <code>e.xml.gz</code></li>
+          <li>更新后自动清理 jsDelivr 缓存，不会滞后</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>DIYP 接口（可选）</h3>
+        <ul>
+          <li>把 <code>worker/epg.js</code> 部署到 Cloudflare Workers</li>
+          <li><code>?ch=CCTV1&amp;date=20261105</code> 返回 JSON</li>
+          <li>部署步骤见 <code>worker/README.md</code></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    台标与节目单版权归各电视台及原始整理者所有，本仓库仅做公开资源汇总，如有侵权请联系删除。<br>
+    <a href="https://github.com/zcyxa/tvlogo">GitHub 仓库</a> ·
+    <a href="https://github.com/zcyxa/tvlogo/blob/main/README.md">README</a>
+  </footer>
+
+</div>
+
+<script>
+  var LOGOS = [
+    "CCTV1","CCTV2","CCTV3","CCTV4","CCTV5","CCTV5+","CCTV6","CCTV7","CCTV8","CCTV9",
+    "CCTV10","CCTV11","CCTV12","CCTV13","CCTV14","CCTV15","CCTV16","CCTV17",
+    "湖南卫视","浙江卫视","江苏卫视","东方卫视","北京卫视","广东卫视","深圳卫视",
+    "安徽卫视","山东卫视","天津卫视","四川卫视","湖北卫视","河南卫视","江西卫视",
+    "辽宁卫视","黑龙江卫视","贵州卫视","云南卫视","重庆卫视","翡翠台",
+    "湖南经视","浙江民生休闲","江苏城市","东方影视","北京文艺","广东珠江"
+  ];
+
+  // 复制
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('[data-copy]') : null;
+    if (!btn) return;
+    var el = document.getElementById(btn.getAttribute('data-copy'));
+    if (!el) return;
+    var text = el.textContent.trim();
+    var ok = function () {
+      var old = btn.textContent;
+      btn.textContent = '已复制';
+      btn.classList.add('done');
+      setTimeout(function () { btn.textContent = old; btn.classList.remove('done'); }, 1400);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok, function () { fallback(text, ok); });
+    } else {
+      fallback(text, ok);
+    }
+  });
+
+  function fallback(text, ok) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); ok(); } catch (err) {}
+    document.body.removeChild(ta);
+  }
+
+  // 台标网格
+  var box = document.getElementById('logos');
+  var html = '';
+  for (var i = 0; i < LOGOS.length; i++) {
+    var n = LOGOS[i];
+    var path = 'tv/' + encodeURIComponent(n) + '.png';
+    html += '<div class="logo" data-name="' + n.toLowerCase() + '">' +
+              '<img loading="lazy" src="' + path + '" alt="' + n + '">' +
+              '<span>' + n + '</span>' +
+            '</div>';
+  }
+  box.innerHTML = html;
+
+  // 过滤
+  var q = document.getElementById('q');
+  var empty = document.getElementById('empty');
+  q.addEventListener('input', function () {
+    var kw = q.value.trim().toLowerCase();
+    var items = box.querySelectorAll('.logo');
+    var shown = 0;
+    for (var i = 0; i < items.length; i++) {
+      var hit = !kw || items[i].getAttribute('data-name').indexOf(kw) >= 0;
+      items[i].style.display = hit ? '' : 'none';
+      if (hit) shown++;
+    }
+    empty.hidden = shown > 0;
+  });
+</script>
+</body>
+</html>
