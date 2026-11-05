@@ -32,7 +32,7 @@
   h2{font-size:17px;margin:0 0 16px;display:flex;align-items:center;gap:9px}
   h2::before{content:"";width:4px;height:16px;border-radius:2px;background:var(--brand)}
   h2 span{font-size:12.5px;color:var(--muted);font-weight:400}
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
   .card h3{margin:0;font-size:14px;font-weight:600}
   .card .hint{margin:2px 0 10px;font-size:12.5px;color:var(--muted)}
@@ -40,7 +40,7 @@
   code{
     flex:1;min-width:0;font:12.5px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;
     background:var(--code);border-radius:8px;padding:8px 10px;
-    overflow:auto;white-space:nowrap;
+    overflow:hidden;white-space:normal;word-break:break-all;
   }
   button{
     flex:none;border:1px solid var(--line);background:var(--card);color:var(--text);
@@ -78,8 +78,8 @@
     <h1>电视直播台标 &amp; EPG</h1>
     <p>纯静态 · 免服务器 · 直接给 IPTV / DIYP 客户端调用</p>
     <div class="tags">
-      <span class="tag">942 个电视频道台标</span>
-      <span class="tag">468 个电台图标</span>
+      <span class="tag">946 个电视频道台标</span>
+      <span class="tag">470 个电台图标</span>
       <span class="tag">XMLTV 节目单</span>
       <span class="tag">每 2 小时自动更新</span>
     </div>

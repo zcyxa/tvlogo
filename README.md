@@ -2,7 +2,7 @@
 
 一个 **纯静态** 的台标库 + EPG 节目单仓库：只放图片和节目单文件，不需要服务器、不需要数据库，直接走 GitHub Pages / jsDelivr / 任意 GitHub 加速节点给播放器调用。
 
-- **台标**：`tv/` 942 个电视频道台标（PNG），`radio/` 468 个电台图标
+- **台标**：`tv/` 946 个电视频道台标（PNG），`radio/` 470 个电台图标
 - **EPG**：XMLTV 格式节目单，每 2 小时自动更新，同时提供 `.xml` 与 `.xml.gz`
 - **接口**：`worker/epg.js`（Cloudflare Worker，DIYP 格式 JSON 接口）
 
